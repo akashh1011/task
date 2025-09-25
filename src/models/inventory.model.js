@@ -3,21 +3,24 @@ const inventorySchema = new Schema({
 
   productId:{
     type:Schema.Types.ObjectId,
-    ref:"Product"
+    ref:"Product",
+    required:true
   },
 
   oldQuantity:{
-    type:Number
+    type:Number,
+    required:true
   },
 
   newQuantity:{
-    type:Number
+    type:Number,
+    required:true
   },
 
-  date:{
-    type:Date
+  changedAt:{
+    type:Date,
+    default:Date.now
   }
-
 
 },{timestamps:true})
 
