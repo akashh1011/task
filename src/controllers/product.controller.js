@@ -6,6 +6,7 @@ import { ApiError } from "../utils/ApiError.util.js"
 
 // POST /api/products/import
 export const importProducts = asyncHandler(async (req, res) => {
+  console.log(req.file)
   if (!req.file) {
     throw new ApiError(400, "No file uploaded")
   }
