@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { exportProducts, getProducts, importProducts, updateProduct } from "../controllers/product.controller.js";
+import { exportProducts, getInventoryHistory, getProducts, importProducts, updateProduct } from "../controllers/product.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
 
 const router = Router()
@@ -21,6 +21,6 @@ router.route("/products/:id").put(updateProduct)
 
 //route for log history
 
-//router.route("/inventory/:productId/hisot")
+router.route("/inventory/:productId/history").get(getInventoryHistory)
 
 export default router
