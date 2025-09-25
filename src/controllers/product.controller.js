@@ -1,4 +1,6 @@
 import { Product } from "../models/product.model.js";
+import mongoose from "mongoose"
+import { Inventory } from "../models/Inventory.model.js";
 import { parseCSVtoJSON } from "../utils/csvParser.util.js";
 import { asyncHandler } from "../utils/asyncHandler.util.js";
 import { ApiResponse } from "../utils/ApiResponse.util.js";
@@ -96,7 +98,9 @@ const updateProduct = asyncHandler(async (req, res) => {
   const { id } = req.params
   const { name, unit, category, brand, stock, status, image } = req.body
 
-  // 1. Check if product exists
+  
+
+  
   const product = await Product.findById(id)
   if (!product) {
     throw new ApiError(404, "Product not found")
@@ -104,12 +108,12 @@ const updateProduct = asyncHandler(async (req, res) => {
 
   const oldStock = product.stock
 
-  // 2. Validation: stock must be numeric
+  
   if (stock !== undefined && isNaN(Number(stock))) {
     throw new ApiError(400, "Stock must be a number")
   }
 
-  // 3. Validation: unique name (only if name is changed)
+  
   if (name && name !== product.name) {
     const existing = await Product.findOne({ name: name.trim() })
     if (existing) {
@@ -125,22 +129,46 @@ const updateProduct = asyncHandler(async (req, res) => {
   if (status) product.status = status.trim()
   if (image) product.image = image.trim()
 
-  // 5. Save updated product
-  console.log({
-  productId: product._id,
-  oldStock,
-  stockFromBody: stock,
-  updatedStock: product.stock
-});
+  
 
   const updatedProduct = await product.save()
+
+  //for log history
+  if (stock !== undefined && oldStock !== product.stock) {
+    await Inventory.create({
+      productId: product._id,
+      oldQuantity: oldStock,
+      newQuantity: product.stock,
+      changedBy: "Admin User", // replace with req.user.name if auth exists
+    });
+  }
 
   return res.status(200).json(
     new ApiResponse(200, updatedProduct, "Product updated successfully")
   )
 })
 
+//history for log inventory controller
+
+const getInventoryHistory = asyncHandler(async (req, res) => {
+  const { productId } = req.params;
+
+  // Optional: validate ObjectId
+  if (!mongoose.Types.ObjectId.isValid(productId)) {
+    throw new ApiError(400, "Invalid product ID");
+  }
+
+  const logs = await Inventory.find({
+    productId: new mongoose.Types.ObjectId(productId)
+  })
+    .sort({ changedAt: -1 }) // newest first
+    .lean();
+
+  return res.status(200).json(
+    new ApiResponse(200, logs, "Inventory history fetched successfully")
+  );
+});
 
   
 
-export { importProducts, exportProducts, getProducts,updateProduct };
+export { importProducts, exportProducts, getProducts,updateProduct, getInventoryHistory };
