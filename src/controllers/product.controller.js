@@ -1,8 +1,8 @@
 import { Product } from "../models/product.model.js"
-import { parseCSVtoJSON } from "../utils/csvParser.js"
-import { asyncHandler } from "../utils/asyncHandler.js"
-import { ApiResponse } from "../utils/ApiResponse.js"
-import { ApiError } from "../utils/ApiError.js"
+import { parseCSVtoJSON } from "../utils/csvParser.util.js"
+import { asyncHandler } from "../utils/asyncHandler.util.js"
+import { ApiResponse } from "../utils/ApiResponse.util.js"
+import { ApiError } from "../utils/ApiError.util.js"
 
 // POST /api/products/import
 export const importProducts = asyncHandler(async (req, res) => {

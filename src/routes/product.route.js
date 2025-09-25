@@ -6,3 +6,5 @@ const router = Router()
 
 //import products
 router.route("/import").post(upload.single("file"),importProducts)
+
+export default router

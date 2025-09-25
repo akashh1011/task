@@ -1,5 +1,5 @@
 import fs from "fs"
-import csvParser from "csv-parser"
+import csv from "csv-parser"
 import { ApiError } from "./ApiError.util.js"
 
 
