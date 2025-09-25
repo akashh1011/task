@@ -1,0 +1,15 @@
+import express from "express"
+import cors from "cors"
+import productRouter from "../src/routes/product.route.js"
+const app = express()
+
+app.use(cors({
+  origin:process.env.CORS_ORIGIN,
+  credentials:true
+}))
+
+
+//route initialize
+app.use("/api/products", productRouter)
+
+export default app
