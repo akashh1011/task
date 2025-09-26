@@ -7,20 +7,20 @@ const router = Router()
 //import products
 
 //post for import
-router.route("api/products/import").post(upload.single("file"),importProducts)
+router.route("/api/products/import").post(upload.single("file"),importProducts)
 
 //get for export
-router.route("api/products/export").get(exportProducts)
+router.route("/api/products/export").get(exportProducts)
 
 //get for json list
-router.route("api/products").get(getProducts)
+router.route("/api/products").get(getProducts)
 
 //put for update
-router.route("api/products/:id").put(updateProduct)
+router.route("/api/products/:id").put(updateProduct)
 
 
 //route for log history
 
-router.route("api/inventory/:productId/history").get(getInventoryHistory)
+router.route("/api/inventory/:productId/history").get(getInventoryHistory)
 
 export default router
