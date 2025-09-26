@@ -15,6 +15,6 @@ app.use(cors({
 
 
 //route initialize
-app.use("/api", productRouter)
+app.use("/", productRouter)
 
 export default app
